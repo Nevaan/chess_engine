@@ -1,6 +1,6 @@
 data Kolor = Czarny | Bialy deriving Show
 
-data BFigura = Krol | Dama | Goniec | Skoczek | Pion deriving Show
+data BFigura = Krol | Dama | Goniec | Wieza | Skoczek | Pion deriving Show
 
 data Figura = Figura Kolor BFigura deriving Show
 
@@ -17,13 +17,16 @@ iplansza = ["KDGSPK"
 pokazF :: Figura -> Char
 pokazF (Figura Czarny Krol) = 'K'
 pokazF (Figura Czarny Dama) = 'D'
+pokazF (Figura Czarny Wieza) = 'W'
 pokazF (Figura Czarny Goniec) = 'G'
 pokazF (Figura Czarny Skoczek) = 'S'
 pokazF (Figura Czarny Pion) = 'P'
 
+
 pokazF (Figura Bialy Krol) = 'k'
 pokazF (Figura Bialy  Dama) = 'd'
 pokazF (Figura Bialy  Goniec) = 'g'
+pokazF (Figura Bialy Wieza) = 'w'
 pokazF (Figura Bialy  Skoczek) = 's'
 pokazF (Figura Bialy   Pion) = 'p'
 
@@ -32,12 +35,14 @@ czytajF :: Char -> Figura
 czytajF 'K'= (Figura Czarny Krol)
 czytajF 'D'= (Figura Czarny Dama)
 czytajF 'G'= (Figura Czarny Goniec)
+czytajF 'W' = (Figura Czarny Wieza)
 czytajF 'S'= (Figura Czarny Skoczek)
 czytajF 'P'= (Figura Czarny Pion)
 
 czytajF 'k'= (Figura Bialy Krol)
 czytajF 'd'= (Figura Bialy Dama)
 czytajF 'g'= (Figura Bialy Goniec)
+czytajF 'w' = (Figura Bialy Wieza)
 czytajF 's'= (Figura Bialy Skoczek)
 czytajF 'p'= (Figura Bialy Pion)
 
