@@ -8,7 +8,8 @@ type Square = Maybe ColouredFigure
 
 type Board = [[Square]]
 
---type Pos = (Int, Int)
+-- starting with upper left corner, coordinates are (x,y)
+type Position = (Int, Int)
 
 initBoard = unlines [ "RNBQKBNR",
                       "PPPPPPPP",
@@ -68,4 +69,37 @@ showBoard :: Board -> String
 showBoard = unlines . map showLine
   where showLine = map showSquare
 
+deleteElement :: [a] -> Int -> [a]
+deleteElement (x:xs) 0 = xs
+deleteElement (x:xs) n = x:(deleteElement xs (n-1))
+
+insertElement :: [a] -> Int -> a -> [a]
+insertElement x 0 e = e:x
+insertElement (x:xs) n e = x:(insertElement xs (n-1) e)
+
+
+insertInPlace :: [a] -> Int -> a -> [a]
+insertInPlace (x:xs) 0 e = e:xs
+insertInPlace (x:xs) n e = x:(insertInPlace xs (n-1) e)
+
+swap :: [a] -> Int -> Int -> [a]
+swap lista x y      = insertXonY insertYonX
+  where
+        insertYonX     = insertElement (deleteElement lista x) x  (lista!!y)
+        insertXonY iks = insertElement (deleteElement iks   y) y  (lista!!x)
+
+
+-- TODO: fix the problem with moving in one row
+makeMove :: String -> Position -> Position -> String
+makeMove board (sourceX, sourceY) (destinationX, destinationY) = unlines returnReadyBoard
+  where
+        linedBoard             = lines board
+        sourceRow              = linedBoard!!sourceY
+        destinationRow         = linedBoard!!destinationY
+        insertBlankPosition    = insertElement removeSourcePiece sourceX ' '
+        removeSourcePiece      = deleteElement sourceRow sourceX
+        removeDestinationPiece = deleteElement destinationRow destinationX
+        insertOnNewPosition    = insertElement removeDestinationPiece destinationX (sourceRow!!sourceX)
+        insertReadySourceRow   = insertInPlace linedBoard sourceY insertBlankPosition
+        returnReadyBoard       = insertInPlace insertReadySourceRow destinationY insertOnNewPosition
 
