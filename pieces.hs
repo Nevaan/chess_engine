@@ -74,7 +74,7 @@ deleteElement (x:xs) 0 = xs
 deleteElement (x:xs) n = x:(deleteElement xs (n-1))
 
 insertElement :: [a] -> Int -> a -> [a]
-insertElement x 0 e = e:x
+insertElement x 0 e      = e:x
 insertElement (x:xs) n e = x:(insertElement xs (n-1) e)
 
 
@@ -83,7 +83,7 @@ insertInPlace (x:xs) 0 e = e:xs
 insertInPlace (x:xs) n e = x:(insertInPlace xs (n-1) e)
 
 swap :: [a] -> Int -> Int -> [a]
-swap lista x y      = insertXonY insertYonX
+swap lista x y = insertXonY insertYonX
   where
         insertYonX     = insertElement (deleteElement lista x) x  (lista!!y)
         insertXonY iks = insertElement (deleteElement iks   y) y  (lista!!x)
@@ -102,3 +102,21 @@ movePiece board (sourceX,sourceY) (destinationX,destinationY) = unlines insertRe
     removeDestinationPiece          = deleteElement destinationRow destinationX
     insertOnDestination             = insertElement removeDestinationPiece destinationX sourcePiece
     insertReadyDestRow              = insertInPlace insertBlankedToBoard destinationY insertOnDestination
+
+
+possibleMoves :: Figure -> Position -> [(Int,Int)]
+possibleMoves King   (currentX, currentY)  = [(x,y)|x <-[currentX+1,currentX,currentX-1], y<- [currentY+1,currentY,currentY-1],(x,y)/=(currentX,currentY),x>=0,y>=0,x<=7,y<=7]
+--need to add diagonally moves
+possibleMoves Queen  (currentX, currentY)  = pion++poziom
+  where pion   = [(currentX+x,currentY)|x<-[-7..7],(currentX+x)>=0,(currentX+x)<=7,(currentX+x,currentY)/=(currentX,currentY)]
+        poziom = [(currentX,currentY+y)|y<-[-7..7],(currentY+y)>=0,(currentY+y)<=7,(currentX,currentY+y)/=(currentX,currentY)]
+
+possibleMoves Rook   (currentX, currentY)  = vertical++horizontal
+  where vertical   = [(currentX+x,currentY)|x<-[-7..7],(currentX+x)>=0,(currentX+x)<=7,(currentX+x,currentY)/=(currentX,currentY)]
+        horizontal = [(currentX,currentY+y)|y<-[-7..7],(currentY+y)>=0,(currentY+y)<=7,(currentX,currentY+y)/=(currentX,currentY)]
+
+--possibleMoves Bishop (currentX, currentY)  =
+possibleMoves Knight (currentX, currentY)  = [(currentX+x,currentY+y)|x<-[-2,-1,1,2],y<-[-2,-1,1,2],(currentX+x,currentY+y)/=(currentX+x,currentY+x),(currentX+x,currentY+y)/=(currentX-y,currentY+y),
+                                              (currentX+x)>=0,(currentX+x)<=7,(currentY+y)>=0,(currentY+y)<=7]
+--possibleMoves Pawn   (currentX, currentY)  =
+
