@@ -89,17 +89,16 @@ swap lista x y      = insertXonY insertYonX
         insertXonY iks = insertElement (deleteElement iks   y) y  (lista!!x)
 
 
--- TODO: fix the problem with moving in one row
-makeMove :: String -> Position -> Position -> String
-makeMove board (sourceX, sourceY) (destinationX, destinationY) = unlines returnReadyBoard
+movePiece :: String -> Position -> Position -> String
+movePiece board (sourceX,sourceY) (destinationX,destinationY) = unlines insertReadyDestRow
   where
-        linedBoard             = lines board
-        sourceRow              = linedBoard!!sourceY
-        destinationRow         = linedBoard!!destinationY
-        insertBlankPosition    = insertElement removeSourcePiece sourceX ' '
-        removeSourcePiece      = deleteElement sourceRow sourceX
-        removeDestinationPiece = deleteElement destinationRow destinationX
-        insertOnNewPosition    = insertElement removeDestinationPiece destinationX (sourceRow!!sourceX)
-        insertReadySourceRow   = insertInPlace linedBoard sourceY insertBlankPosition
-        returnReadyBoard       = insertInPlace insertReadySourceRow destinationY insertOnNewPosition
-
+    linedBoard                      = lines board
+    sourceRow                       = linedBoard!!sourceY
+    sourcePiece                     = sourceRow!!sourceX
+    removeSourcePiece               = deleteElement sourceRow sourceX
+    insertBlank                     = insertElement removeSourcePiece sourceX ' '
+    insertBlankedToBoard            = insertInPlace linedBoard sourceY insertBlank
+    destinationRow                  = insertBlankedToBoard!!destinationY
+    removeDestinationPiece          = deleteElement destinationRow destinationX
+    insertOnDestination             = insertElement removeDestinationPiece destinationX sourcePiece
+    insertReadyDestRow              = insertInPlace insertBlankedToBoard destinationY insertOnDestination
