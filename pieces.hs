@@ -1,15 +1,10 @@
 data Colour = Black | White deriving Show
-
 data Figure = King | Queen | Rook | Bishop | Knight | Pawn deriving Show
-
 data ColouredFigure = ColouredFigure Colour Figure deriving Show
 
 type Square = Maybe ColouredFigure
-
 type Board = [[Square]]
-
--- starting with upper left corner, coordinates are (x,y)
-type Position = (Int, Int)
+type Position = (Int, Int) -- starting with upper left corner, coordinates are (x,y)
 
 initBoard = unlines [ "RNBQKBNR",
                       "PPPPPPPP",
@@ -20,7 +15,6 @@ initBoard = unlines [ "RNBQKBNR",
                       "pppppppp",
                       "rnbqkbnr"
                     ]
-
 
 showFigure :: ColouredFigure -> Char
 showFigure (ColouredFigure Black King)   = 'K'
@@ -77,7 +71,6 @@ insertElement :: [a] -> Int -> a -> [a]
 insertElement x 0 e      = e:x
 insertElement (x:xs) n e = x:(insertElement xs (n-1) e)
 
-
 insertInPlace :: [a] -> Int -> a -> [a]
 insertInPlace (x:xs) 0 e = e:xs
 insertInPlace (x:xs) n e = x:(insertInPlace xs (n-1) e)
@@ -87,7 +80,6 @@ swap lista x y = insertXonY insertYonX
   where
         insertYonX     = insertElement (deleteElement lista x) x  (lista!!y)
         insertXonY iks = insertElement (deleteElement iks   y) y  (lista!!x)
-
 
 movePiece :: String -> Position -> Position -> String
 movePiece board (sourceX,sourceY) (destinationX,destinationY) = unlines insertReadyDestRow
@@ -103,18 +95,23 @@ movePiece board (sourceX,sourceY) (destinationX,destinationY) = unlines insertRe
     insertOnDestination             = insertElement removeDestinationPiece destinationX sourcePiece
     insertReadyDestRow              = insertInPlace insertBlankedToBoard destinationY insertOnDestination
 
-
-possibleMoves :: Figure -> Position -> [(Int,Int)]
-possibleMoves King   (currentX, currentY)  = [(x,y)|x <-[currentX+1,currentX,currentX-1], y <-[currentY+1,currentY,currentY-1],(x,y)/=(currentX,currentY),x>=0,y>=0,x<=7,y<=7]
-possibleMoves Queen  (currentX, currentY)  = (possibleMoves Rook (currentX,currentY))++(possibleMoves Bishop (currentX,currentY))
-possibleMoves Rook   (currentX, currentY)  = vertical++horizontal
+possibleMoves :: ColouredFigure -> Position -> [(Int,Int)]
+possibleMoves (ColouredFigure _ King)   (currentX, currentY)  = [(x,y)|x <-[currentX+1,currentX,currentX-1], y <-[currentY+1,currentY,currentY-1],(x,y)/=(currentX,currentY),x>=0,y>=0,x<=7,y<=7]
+possibleMoves (ColouredFigure _ Queen)  (currentX, currentY)  = rookMoves++bishopMoves
+  where rookMoves   = possibleMoves (ColouredFigure White Rook) (currentX, currentY)
+        bishopMoves = possibleMoves (ColouredFigure White Bishop) (currentX, currentY)
+possibleMoves (ColouredFigure _ Rook)   (currentX, currentY)  = vertical++horizontal
   where vertical   = [(currentX+x,currentY)|x <-[-7..7],(currentX+x)>=0,(currentX+x)<=7,(currentX+x,currentY)/=(currentX,currentY)]
         horizontal = [(currentX,currentY+y)|y <-[-7..7],(currentY+y)>=0,(currentY+y)<=7,(currentX,currentY+y)/=(currentX,currentY)]
-possibleMoves Bishop (currentX, currentY)  = backslashDiagonal++slashDiagonal
-  where
-        backslashDiagonal = [(currentX+x,currentY+x)|x <- [-7..7],(currentX+x)>=0, (currentX+x)<=7,(currentY+x)>=0, (currentY+x)<=7,x/=0]
+possibleMoves (ColouredFigure _ Bishop) (currentX, currentY)  = backslashDiagonal++slashDiagonal
+  where backslashDiagonal = [(currentX+x,currentY+x)|x <- [-7..7],(currentX+x)>=0, (currentX+x)<=7,(currentY+x)>=0, (currentY+x)<=7,x/=0]
         slashDiagonal     = [(currentX+x,currentY-x)|x <- [-7..7],(currentX+x)>=0, (currentX+x)<=7,(currentY-x)>=0, (currentY-x)<=7,x/=0]
-possibleMoves Knight (currentX, currentY)  = [(currentX+x,currentY+y)|x<-[-2,-1,1,2],y<-[-2,-1,1,2],(currentX+x,currentY+y)/=(currentX+x,currentY+x),(currentX+x,currentY+y)/=(currentX-y,currentY+y),
-                                              (currentX+x)>=0,(currentX+x)<=7,(currentY+y)>=0,(currentY+y)<=7]
---possibleMoves Pawn   (currentX, currentY)  =
+possibleMoves (ColouredFigure _ Knight) (currentX, currentY)  = [(currentX+x,currentY+y)|x<-[-2,-1,1,2],y<-[-2,-1,1,2],(currentX+x,currentY+y)/=(currentX+x,currentY+x),(currentX+x,currentY+y)/=(currentX-y,currentY+y),
+                  (currentX+x)>=0,(currentX+x)<=7,(currentY+y)>=0,(currentY+y)<=7]
 
+possibleMoves (ColouredFigure Black Pawn) (currentX, 1)        = [(currentX,2),(currentX,3)]++[(currentX+x,2)|x<-[-1,1],(currentX+x)<=7,(currentX+x)>=0]
+possibleMoves (ColouredFigure Black Pawn) (currentX, currentY) = [(currentX,currentY+1)|(currentY+1)<=7]++diagonal
+  where diagonal = [(currentX+x,currentY+1)|x<-[-1,1],(currentX+x)>=0, (currentX+x)<=7,(currentY+1)<=7]
+possibleMoves (ColouredFigure White Pawn) (currentX, 6)        = [(currentX,5),(currentX,4)]++[(currentX+x,5)|x<-[-1,1],(currentX+x)<=7,(currentX+x)>=0]
+possibleMoves (ColouredFigure White Pawn) (currentX,currentY)  =  [(currentX,currentY-1)|(currentY+1)>=0]++diagonal
+  where diagonal = [(currentX+x,currentY-1)|x<-[-1,1],(currentX+x)>=0, (currentX+x)<=7,(currentY-1)>=0]
