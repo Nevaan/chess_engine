@@ -1,3 +1,6 @@
+import BoardRepresentation
+
+module PieceMovement where
 deleteElement :: [a] -> Int -> [a]
 deleteElement (x:xs) 0 = xs
 deleteElement (x:xs) n = x:(deleteElement xs (n-1))

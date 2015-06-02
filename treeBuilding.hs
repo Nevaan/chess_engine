@@ -1,3 +1,6 @@
+import PieceMovement
+
+module PossibleMoves where
 possibleMoves :: ColouredFigure -> Position -> [(Int,Int)]
 possibleMoves (ColouredFigure _ King)   (currentX, currentY)  = [(x,y)|x <-[currentX+1,currentX,currentX-1], y <-[currentY+1,currentY,currentY-1],(x,y)/=(currentX,currentY),x>=0,y>=0,x<=7,y<=7]
 possibleMoves (ColouredFigure _ Queen)  (currentX, currentY)  = rookMoves++bishopMoves

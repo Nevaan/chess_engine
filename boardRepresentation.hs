@@ -1,4 +1,4 @@
-module BoardRepresentation (ColouredFigure, Square, Board, Position, initBoard)
+module BoardRepresentation where
 
 data Colour = Black | White deriving Show
 data Figure = King | Queen | Rook | Bishop | Knight | Pawn deriving Show

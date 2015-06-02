@@ -1,3 +1,6 @@
+import BoardRepresentation
+
+module BoardDisplay where
 
 showFigure :: ColouredFigure -> Char
 showFigure (ColouredFigure Black King)   = 'K'
