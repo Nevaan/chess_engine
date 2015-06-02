@@ -1,0 +1,4 @@
+#no swp files
+*.swp
+#no strange temporary files
+*~
