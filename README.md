@@ -7,8 +7,8 @@ This file will be updates as I will develop the whole project. Chess engine will
 
 At the moment project contains:
 
--piece, square and board representation,
-
--some functions which help with moving the pieces
-
--a function showing all possible moves. All of that will need some refactoring as soon as I will get better knowledge of Haskell :). 
+- piece, square and board representation,
+- some functions which help with moving the pieces
+- a function showing all possible moves.
+ 
+ All of that will need some refactoring as soon as I will get better knowledge of Haskell :). 
