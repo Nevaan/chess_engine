@@ -2,3 +2,6 @@
 *.swp
 #no strange temporary files
 *~
+
+*.hi
+*.o
