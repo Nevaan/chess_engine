@@ -2,6 +2,21 @@ module TreeBuilding where
 import PieceMovement
 import BoardRepresentation
 
+figureValue :: Figure -> Int
+figureValue Pawn    = 1
+figureValue Knight  = 3
+figureValue Bishop  = 3
+figureValue Rook    = 5
+figureValue Queen   = 9
+
+
+--sprobowac wywolac z map count... Board
+countFigureValues:: [Square] -> (Int,Int)
+countFigureValues x = (a,b)
+  where
+     a = figureValue!!1
+     b = figureValue!!1
+
 possibleMoves :: ColouredFigure -> Position -> [(Int,Int)]
 possibleMoves (ColouredFigure _ King)   (currentX, currentY)  = [(x,y)|x <-[currentX+1,currentX,currentX-1], y <-[currentY+1,currentY,currentY-1],(x,y)/=(currentX,currentY),x>=0,y>=0,x<=7,y<=7]
 possibleMoves (ColouredFigure _ Queen)  (currentX, currentY)  = rookMoves++bishopMoves
