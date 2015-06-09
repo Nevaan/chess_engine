@@ -9,6 +9,9 @@ figureValue Bishop  = 3
 figureValue Rook    = 5
 figureValue Queen   = 9
 
+--typ drzewa
+-- data Tree a = 
+
 
 --sprobowac wywolac z map count... Board
 countFigureValues:: [Square] -> (Int,Int)
