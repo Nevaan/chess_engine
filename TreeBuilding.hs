@@ -1,24 +1,24 @@
 module TreeBuilding where
 import PieceMovement
 import BoardRepresentation
+import BoardDisplay
 
-figureValue :: Figure -> Int
-figureValue Pawn    = 1
-figureValue Knight  = 3
-figureValue Bishop  = 3
-figureValue Rook    = 5
-figureValue Queen   = 9
+figureValue :: ColouredFigure -> Int
+figureValue (ColouredFigure _  Pawn  )  = 1
+figureValue (ColouredFigure _  Knight)  = 3
+figureValue (ColouredFigure _  Bishop)  = 3
+figureValue (ColouredFigure _  Rook  )  = 5
+figureValue (ColouredFigure _  Queen )  = 9
 
 --typ drzewa
 -- data Tree a = 
 
 
 --sprobowac wywolac z map count... Board
-countFigureValues:: [Square] -> (Int,Int)
-countFigureValues x = (a,b)
-  where
-     a = figureValue!!1
-     b = figureValue!!1
+--countFigureValues:: String -> (Int)
+--countFigureValues x = (a)
+--  where
+--     a = figureValue (map (map readSquare) (lines x))  -- zle
 
 possibleMoves :: ColouredFigure -> Position -> [(Int,Int)]
 possibleMoves (ColouredFigure _ King)   (currentX, currentY)  = [(x,y)|x <-[currentX+1,currentX,currentX-1], y <-[currentY+1,currentY,currentY-1],(x,y)/=(currentX,currentY),x>=0,y>=0,x<=7,y<=7]

@@ -32,6 +32,7 @@ readFigure 'b' = (ColouredFigure White Bishop)
 readFigure 'n' = (ColouredFigure White Knight)
 readFigure 'p' = (ColouredFigure White Pawn)
 
+
 showSquare :: Square -> Char
 showSquare Nothing     = ' '
 showSquare (Just p) = showFigure p
