@@ -9,19 +9,27 @@ figureValue (ColouredFigure _  Knight)  = 3
 figureValue (ColouredFigure _  Bishop)  = 3
 figureValue (ColouredFigure _  Rook  )  = 5
 figureValue (ColouredFigure _  Queen )  = 9
+figureValue (ColouredFigure _  King )  = 0
 
---typ drzewa
--- data Tree a =
-
-
---sprobowac wywolac z map count... Board
---countFigureValues:: String -> (Int)
---countFigureValues x = (a)
---  where
---     a = figureValue (map (map readSquare) (lines x))  -- zle
+figureValue' :: Figure -> Int
+figureValue' Pawn   = 1
+figureValue' Knight = 3
+figureValue' Bishop = 3
+figureValue' Rook   = 5
+figureValue' Queen  = 9
 
 getStringOfFigures :: String -> String
 getStringOfFigures fullBoard = filter (/='\n') $ filter (/=' ') fullBoard
+
+readWhiteFigures :: String -> [ColouredFigure]
+readWhiteFigures board = [ readFigure x | x <- board, elem x ['a'..'z'] ]
+
+readBlackFigures :: String -> [ColouredFigure]
+readBlackFigures board = [ readFigure x | x <- board, elem x ['A'..'Z']]
+
+countFiguresValue :: [ColouredFigure] -> Int
+countFiguresValue x = sum [figureValue a | a<-x]
+
 
 
 possibleMoves :: ColouredFigure -> Position -> [(Int,Int)]
