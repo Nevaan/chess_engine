@@ -11,7 +11,7 @@ figureValue (ColouredFigure _  Rook  )  = 5
 figureValue (ColouredFigure _  Queen )  = 9
 
 --typ drzewa
--- data Tree a = 
+-- data Tree a =
 
 
 --sprobowac wywolac z map count... Board
@@ -19,6 +19,10 @@ figureValue (ColouredFigure _  Queen )  = 9
 --countFigureValues x = (a)
 --  where
 --     a = figureValue (map (map readSquare) (lines x))  -- zle
+
+getStringOfFigures :: String -> String
+getStringOfFigures fullBoard = filter (/='\n') $ filter (/=' ') fullBoard
+
 
 possibleMoves :: ColouredFigure -> Position -> [(Int,Int)]
 possibleMoves (ColouredFigure _ King)   (currentX, currentY)  = [(x,y)|x <-[currentX+1,currentX,currentX-1], y <-[currentY+1,currentY,currentY-1],(x,y)/=(currentX,currentY),x>=0,y>=0,x<=7,y<=7]
