@@ -18,9 +18,6 @@ figureValue' Bishop = 3
 figureValue' Rook   = 5
 figureValue' Queen  = 9
 
---getStringOfFigures :: String -> String
---getStringOfFigures fullBoard = filter (/='\n') $ filter (/=' ') fullBoard
-
 countActualFiguresValue:: String -> (Int, Int)  -- (White,Black)
 countActualFiguresValue board = (x, y)
   where
