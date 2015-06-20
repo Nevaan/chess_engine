@@ -13,12 +13,6 @@ insertInPlace :: [a] -> Int -> a -> [a]
 insertInPlace (x:xs) 0 e = e:xs
 insertInPlace (x:xs) n e = x:(insertInPlace xs (n-1) e)
 
-swap :: [a] -> Int -> Int -> [a]
-swap lista x y = insertXonY insertYonX
-  where
-        insertYonX     = insertElement (deleteElement lista x) x  (lista!!y)
-        insertXonY iks = insertElement (deleteElement iks   y) y  (lista!!x)
-
 movePiece :: String -> Position -> Position -> String
 movePiece board (sourceX,sourceY) (destinationX,destinationY) = unlines insertReadyDestRow
   where
