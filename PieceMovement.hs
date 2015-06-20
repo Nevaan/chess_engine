@@ -14,15 +14,8 @@ insertInPlace (x:xs) 0 e = e:xs
 insertInPlace (x:xs) n e = x:(insertInPlace xs (n-1) e)
 
 movePiece :: String -> Position -> Position -> String
-movePiece board (sourceX,sourceY) (destinationX,destinationY) = unlines insertReadyDestRow
+movePiece board (sX,sY) (dX,dY) = c
   where
-    linedBoard                      = lines board
-    sourceRow                       = linedBoard!!sourceY
-    sourcePiece                     = sourceRow!!sourceX
-    removeSourcePiece               = deleteElement sourceRow sourceX
-    insertBlank                     = insertElement removeSourcePiece sourceX ' '
-    insertBlankedToBoard            = insertInPlace linedBoard sourceY insertBlank
-    destinationRow                  = insertBlankedToBoard!!destinationY
-    removeDestinationPiece          = deleteElement destinationRow destinationX
-    insertOnDestination             = insertElement removeDestinationPiece destinationX sourcePiece
-    insertReadyDestRow              = insertInPlace insertBlankedToBoard destinationY insertOnDestination
+          a = board!!((sY*8)+sX)
+          b = insertInPlace board ((sY*9)+sX) ' '
+          c = insertInPlace b ((dY*9)+dX) a
