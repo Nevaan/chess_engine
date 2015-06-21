@@ -1,6 +1,6 @@
 module BoardRepresentation where
 
-data Colour = Black | White deriving Show
+data Colour = Black | White deriving (Show, Eq)
 data Figure = King | Queen | Rook | Bishop | Knight | Pawn deriving Show
 data ColouredFigure = ColouredFigure Colour Figure deriving Show
 
