@@ -50,16 +50,14 @@ possibleMoves (ColouredFigure White Pawn) (currentX, 6)        = [(currentX,5),(
 possibleMoves (ColouredFigure White Pawn) (currentX,currentY)  =  [(currentX,currentY-1)|(currentY+1)>=0]++diagonal
   where diagonal = [(currentX+x,currentY-1)|x<-[-1,1],(currentX+x)>=0, (currentX+x)<=7,(currentY-1)>=0]
 
-allMoves:: String -> Colour -> [[Position]]
-allMoves board colour = moves
+
+-- nie dokonczona funkcja
+allMoves:: String -> Colour -> [((Int,Char),[Position])]
+allMoves board colour = movesPlusFigures
     where
         figuresList = if (colour == White) then
                                            [(x,y)|(x,y)<-(zip [0..] board),elem y ['a'..'z']]
                                           else
                                            [(x,y)|(x,y)<-(zip [0..] board),elem y ['A'..'Z']]
         moves = [possibleMoves (readFigure y) ((mod x 9),(div x 9))  |(x,y)<-figuresList]
-
-allMoves' board Black = figuresList
-    where
-        figuresList = [(x,y)|(x,y)<-(zip [0..] board),elem y ['A'..'Z']]
-
+        movesPlusFigures = zip figuresList moves
